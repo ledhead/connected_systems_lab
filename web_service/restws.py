@@ -9,15 +9,15 @@ urls = (
 app = web.application(urls, globals())
 
 class GetMotionLog:
-"""
-Creates a web service
+	"""
+	Creates a web service
 
-Setup:
-sudo apt-get install python-pip
-sudo pip install web.py
-sudo pip install -U https://github.com/google/google-visualization-python/zipball/master
-run as: http://localhost:8080/motionlog/<datetime_interval>
-"""
+	Setup:
+	sudo apt-get install python-pip
+	sudo pip install web.py
+	sudo pip install -U https://github.com/google/google-visualization-python/zipball/master
+	run as: http://localhost:8080/motionlog/<datetime_interval>
+	"""
 
 	def GET(self, t_interval):
 		web.header('Access-Control-Allow-Origin', '*')
