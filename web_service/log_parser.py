@@ -3,25 +3,29 @@ from datetime import datetime, time
 import json
 
 class LogParser:
+	"""
+	Parses the system log of the camera to find events related to motion detection.
+	The events are stored in JSON format.
+	"""
 
     def __init__(self, url, username, password):
         self.log = self.get_log(url, username, password)
 
-    # connect to camera and read log
     def get_log(self, url, username, password):
+		"""connect to camera and read log"""
         mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
         mgr.add_password(None, url, username, password)        
         opener = urllib2.build_opener(urllib2.HTTPDigestAuthHandler(mgr))
         urllib2.install_opener(opener)
         return urllib2.urlopen(url).readlines()
 
-    # convert date/time string of format yyyy-mm-ddThh:mm:ss to datetime object
     def get_datetime(self, dt_string):
+		"""convert date/time string of format yyyy-mm-ddThh:mm:ss to datetime object"""
         dt_object = datetime.strptime(dt_string, '%Y-%m-%dT%H:%M:%S')
         return dt_object
 
-    # parse log
     def parse_log(self, t_interval):
+		"""parse log"""
         t_interval = t_interval.split("_")
         interval_start = self.get_datetime(t_interval[0])
         interval_end = self.get_datetime(t_interval[1])
