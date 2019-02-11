@@ -1,6 +1,0 @@
-Assignment description
-
-Specification:
-
-Build a SOA-style system consisting of a motion detection logger, a web service that provides motion logs, and a client that is able to request motion logs from the Axis camera (via the web serive), and display the motion log in a nice way using an online charting service.
-
