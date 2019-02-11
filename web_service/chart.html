@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Load the AJAX API-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+	// define chart
+	google.charts.load("current", {packages:["timeline"]});
+        google.charts.setOnLoadCallback(drawChart);
+
+	function drawChart() {
+	    // set chart container
+            var container = document.getElementById('chart_div');
+            var chart = new google.visualization.Timeline(container);
+            // create dataTable structure
+	    var dataTable = new google.visualization.DataTable();
+	        dataTable.addColumn({ type: 'string', id: 'Chart' });
+	        dataTable.addColumn({ type: 'string', id: 'Motion' });
+	        dataTable.addColumn({ type: 'date', id: 'Start' });
+	        dataTable.addColumn({ type: 'date', id: 'End' });
+
+            $.getJSON('http://localhost:8080/motionlog/2016-10-27T17:00:31_2016-10-27T17:54:00', function (data) {
+		// populate dataTable with JSON data and draw chart
+		for(entry in data)
+		{
+		    var start = new Date(data[entry].Start);
+		    var end = new Date(data[entry].End);
+		    addRow(start, end, data[entry].Motion.toString())
+    	            console.log(data[entry].Motion.toString())
+		    console.log(start)
+		    console.log(end)
+		}		
+		drawChart();
+            });
+
+	    function addRow(start, end, motion) {
+	        dataTable.addRow(['Motion chart', motion, 
+		    new Date(start.getFullYear(),parseInt(start.getMonth() + 1),start.getDate(),start.getHours(),start.getMinutes(),start.getSeconds()),  
+		    new Date(end.getFullYear(),parseInt(end.getMonth() + 1),end.getDate(),end.getHours(),end.getMinutes(),end.getSeconds())
+		    ]);
+	    }
+		
+	    function drawChart() {
+	        var options = { colors: ['#8d8', '#fd8'] };
+	        chart.draw(dataTable, options);
+	    }
+	}
+    });
+    </script>
+  </head>
+
+  <body>
+    <!--Div that will hold the timeline chart-->
+    <div id="chart_div" style="height=170px;"></div>
+  </body>
+</html>
